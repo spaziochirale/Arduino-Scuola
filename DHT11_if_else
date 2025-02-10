@@ -1,0 +1,51 @@
+#include "DHT.h"
+
+// Definizioni dei pin
+#define DHTPIN 2          // Pin del sensore DHT11
+#define DHTTYPE DHT11     // Tipo di sensore
+
+#define LED_VERDE 3       // Pin del LED verde
+#define LED_GIALLO 4      // Pin del LED giallo
+#define LED_ROSSO 5       // Pin del LED rosso
+
+DHT dht(DHTPIN, DHTTYPE); // Inizializzazione del sensore
+
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+  
+  // Impostazione dei pin dei LED come output
+  pinMode(LED_VERDE, OUTPUT);
+  pinMode(LED_GIALLO, OUTPUT);
+  pinMode(LED_ROSSO, OUTPUT);
+}
+
+void loop() {
+  delay(2000);  // Attendere 2 secondi tra le letture
+  
+  float temperatura = dht.readTemperature(); // Lettura della temperatura in °C
+  
+  if (isnan(temperatura)) {
+    Serial.println("Errore nella lettura dal sensore DHT11!");
+    return;
+  }
+
+  Serial.print("Temperatura: ");
+  Serial.print(temperatura);
+  Serial.println(" °C");
+
+  // Controllo della temperatura e gestione dei LED
+  if (temperatura < 20) {
+    digitalWrite(LED_VERDE, HIGH);   // Temperatura bassa
+    digitalWrite(LED_GIALLO, LOW);
+    digitalWrite(LED_ROSSO, LOW);
+  } else if (temperatura >= 20 && temperatura < 28) {
+    digitalWrite(LED_VERDE, LOW);
+    digitalWrite(LED_GIALLO, HIGH);  // Temperatura moderata
+    digitalWrite(LED_ROSSO, LOW);
+  } else {
+    digitalWrite(LED_VERDE, LOW);
+    digitalWrite(LED_GIALLO, LOW);
+    digitalWrite(LED_ROSSO, HIGH);   // Temperatura alta
+  }
+}
