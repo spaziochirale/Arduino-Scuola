@@ -1,0 +1,11 @@
+const int waterSensorPin = A0;  // Pin analogico collegato al sensore
+
+void setup() {
+  Serial.begin(9600);  // Avvia la comunicazione seriale
+}
+
+void loop() {
+  int waterValue = analogRead(waterSensorPin);  // Legge il valore dal sensore
+  Serial.println(waterValue);  // Stampa solo il numero sul Monitor Seriale
+  delay(1000);  // Attende 1 secondo prima della prossima lettura
+}
