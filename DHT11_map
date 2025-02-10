@@ -1,0 +1,50 @@
+#include "DHT.h"
+
+// Definizioni dei pin
+#define DHTPIN 2          
+#define DHTTYPE DHT11     
+
+#define LED_VERDE 3       
+#define LED_GIALLO 5      
+#define LED_ROSSO 6       
+
+DHT dht(DHTPIN, DHTTYPE); 
+
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+  
+  pinMode(LED_VERDE, OUTPUT);
+  pinMode(LED_GIALLO, OUTPUT);
+  pinMode(LED_ROSSO, OUTPUT);
+}
+
+void loop() {
+  delay(2000);  
+  
+  float temperatura = dht.readTemperature();
+  
+  if (isnan(temperatura)) {
+    Serial.println("Errore nella lettura dal sensore DHT11!");
+    return;
+  }
+
+  Serial.print("Temperatura: ");
+  Serial.print(temperatura);
+  Serial.println(" °C");
+
+  // Mappatura della temperatura su valori PWM (0-255)
+  int valoreVerde = map(temperatura, 10, 20, 255, 0);    // Più freddo = LED verde più luminoso
+  int valoreGiallo = map(temperatura, 20, 28, 0, 255);   // Temperatura media = LED giallo più luminoso
+  int valoreRosso = map(temperatura, 28, 35, 0, 255);    // Più caldo = LED rosso più luminoso
+
+  // Limitiamo i valori per evitare anomalie
+  valoreVerde = constrain(valoreVerde, 0, 255);
+  valoreGiallo = constrain(valoreGiallo, 0, 255);
+  valoreRosso = constrain(valoreRosso, 0, 255);
+
+  // Scrittura dei valori PWM ai LED
+  analogWrite(LED_VERDE, valoreVerde);
+  analogWrite(LED_GIALLO, valoreGiallo);
+  analogWrite(LED_ROSSO, valoreRosso);
+}
