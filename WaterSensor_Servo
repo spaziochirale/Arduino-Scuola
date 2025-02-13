@@ -1,0 +1,23 @@
+#include <Servo.h>
+
+Servo myServo;  // Creazione dell'oggetto Servo
+int sensorPin = A0; // Pin analogico del sensore dell'acqua
+int sensorValue = 0; // Valore del sensore
+
+void setup() {
+  myServo.attach(9); // Collegamento del servo al pin 9
+  Serial.begin(9600); // Inizializza la comunicazione seriale
+}
+
+void loop() {
+  sensorValue = analogRead(sensorPin); // Legge il valore del sensore
+  Serial.println(sensorValue); // Stampa il valore sulla seriale per debug
+
+  if (sensorValue == 0) {
+    myServo.write(1); // Se il valore è 0, posiziona il servo a 1 grado
+  } else {
+    myServo.write(179); // Se il valore è maggiore di 0, sposta il servo a 179 gradi
+  }
+  
+  delay(500); // Ritardo per stabilità della lettura
+}
