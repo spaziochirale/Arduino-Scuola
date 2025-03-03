@@ -1,0 +1,27 @@
+#define WATER_SENSOR A0  // Pin del sensore dell'acqua
+#define LED_VERDE 3      // Pin del LED verde
+#define LED_ROSSO 4      // Pin del LED rosso
+
+void setup() {
+  Serial.begin(9600);
+ 
+  pinMode(LED_VERDE, OUTPUT);
+  pinMode(LED_ROSSO, OUTPUT);
+}
+
+void loop() {
+  int valore_acqua = analogRead(WATER_SENSOR);  // Legge il valore del sensore
+
+  Serial.print("Valore del sensore: ");
+  Serial.println(valore_acqua);
+
+  if (valore_acqua == 0) {
+    digitalWrite(LED_VERDE, HIGH);   // Accende il LED verde (nessuna acqua)
+    digitalWrite(LED_ROSSO, LOW);
+  } else {
+    digitalWrite(LED_VERDE, LOW);
+    digitalWrite(LED_ROSSO, HIGH);   // Accende il LED rosso (acqua rilevata)
+  }
+
+  delay(500);  // Ritardo per stabilità della lettura
+}
