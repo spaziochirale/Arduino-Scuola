@@ -1,0 +1,26 @@
+#include <Servo.h>
+
+#define POT_PIN A0   // Pin del potenziometro
+#define SERVO_PIN 9  // Pin del servo
+
+Servo myServo;  // Crea un oggetto servo
+
+void setup() {
+  Serial.begin(9600);  // Inizializza la comunicazione seriale
+  myServo.attach(SERVO_PIN);  // Collega il servo al pin 9
+}
+
+void loop() {
+  int potValue = analogRead(POT_PIN); // Legge il potenziometro (0-1023)
+  int angle = map(potValue, 0, 1023, 0, 180); // Converte in angolo (0-180°)
+
+  myServo.write(angle);  // Muove il servo all'angolo calcolato
+
+  // Stampa i valori sul Monitor Seriale
+  Serial.print("Potenziometro: ");
+  Serial.print(potValue);
+  Serial.print(" | Angolo: ");
+  Serial.println(angle);
+
+  delay(100);  // Breve pausa per evitare aggiornamenti troppo rapidi
+}
