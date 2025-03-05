@@ -1,0 +1,24 @@
+#define RED_PIN 9
+#define GREEN_PIN 10
+#define BLUE_PIN 11
+#define LDR_PIN A0
+
+void setup() {
+  pinMode(RED_PIN, OUTPUT);
+  pinMode(GREEN_PIN, OUTPUT);
+  pinMode(BLUE_PIN, OUTPUT);
+}
+
+void loop() {
+  int lightLevel = analogRead(LDR_PIN); // Legge la luce ambiente (0-1023)
+
+  if (lightLevel < 500) { // Buio: scegli un colore
+    analogWrite(RED_PIN, 255);
+    analogWrite(GREEN_PIN, 0);
+    analogWrite(BLUE_PIN, 0);
+  } else { // Luce: scegli un colore
+    analogWrite(RED_PIN, 0);
+    analogWrite(GREEN_PIN, 0);
+    analogWrite(BLUE_PIN, 255);
+  }
+}
