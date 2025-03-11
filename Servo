@@ -1,0 +1,18 @@
+#include <Servo.h>
+Servo myServo;  // Creazione dell'oggetto Servo
+
+
+void setup() {
+
+myServo.attach(9); // Collegamento del servo al pin 9 
+
+}
+
+void loop() {
+
+myServo.write(1); //Posiziona il servo a 1 grado
+delay(500); 
+myServo.write(179); // Posiziona il servo a 179 gradi
+delay(500); 
+
+}
